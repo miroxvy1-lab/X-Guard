@@ -1,0 +1,6 @@
+{
+  "name": "X-Guard",
+  "description": "Interactive standalone PC access control and security system for personal computers with multiple users, featuring automated lockouts, sound cues, promo codes, admin/user dashboards, and anti-bypass simulators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -118,7 +118,7 @@
   <table style="border: none; background: transparent;">
     <tr>
       <td>
-        <img src="https://img.shields.io/badge/توسعه--دهنده-Amir-X-cyan?style=for-the-badge&logo=github" alt="Developer" />
+        <img src="https://img.shields.io/badge/توسعه--دهنده-Amir_X-cyan?style=for-the-badge&logo=github" alt="Developer" />
       </td>
       <td>
         <img src="https://img.shields.io/badge/ایمیل--اصلی-pokcidman%40gmail.com-purple?style=for-the-badge&logo=gmail" alt="Gmail" />

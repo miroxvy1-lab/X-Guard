@@ -3,7 +3,8 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Platform](https://img.shields.io/badge/platform-React%20%7C%20Vite%20%7C%20TS-cyan.svg)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](#)
-[![Stars](https://img.shields.io/github/stars/miroxvy1-lab/X-Guard?style=flat&color=purple)](#)
+[![Stars](https://img.shields.io/github/stars/miroxvy1-lab/X-Guard.svg?style=flat&color=purple)](https://github.com/opendatalab/MinerU)
+[![stars](https://img.shields.io/github/stars/miroxvy1-lab/X-Guard.svg)]
 [![Last Commit](https://img.shields.io/badge/last%20commit-June%202026-magenta.svg)](#)
 
 ---

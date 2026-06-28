@@ -13,7 +13,7 @@
 ---
 
 <p align="center">
-  <img src="./src/assets/images/xguard_banner_1782657968406.jpg" alt="بنر X-Guard" width="100%" style="border-radius: 16px; border: 1px solid rgba(6, 182, 212, 0.2); box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);" />
+  <img src="./src/assets/images/xguard" alt="بنر X-Guard" width="100%" style="border-radius: 16px; border: 1px solid rgba(6, 182, 212, 0.2); box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);" />
 </p>
 
 ---

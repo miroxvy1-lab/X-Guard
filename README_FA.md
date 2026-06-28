@@ -1,5 +1,5 @@
 # 🛡️ سامانه هوشمند فرماندهی و امنیت کلاینت X-Guard
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?align="center")](https://github.com/miroxvy1-lab/X-Guard)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?)](https://github.com/miroxvy1-lab/X-Guard)
 [![Platform](https://img.shields.io/badge/platform-React%20%7C%20Vite%20%7C%20TS-cyan.svg)](https://github.com/miroxvy1-lab/X-Guard)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/miroxvy1-lab/X-Guard)
 [![Stars](https://img.shields.io/github/stars/miroxvy1-lab/X-Guard.svg?style=flat&color=purple)](https://github.com/miroxvy1-lab/X-Guard)

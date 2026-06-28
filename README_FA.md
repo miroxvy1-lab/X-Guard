@@ -1,11 +1,11 @@
 # 🛡️ سامانه هوشمند فرماندهی و امنیت کلاینت X-Guard
-
+<div style="dir:rtl">
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Platform](https://img.shields.io/badge/platform-React%20%7C%20Vite%20%7C%20TS-cyan.svg)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](#)
 [![Stars](https://img.shields.io/github/stars/pokcidman/xguard?style=flat&color=purple)](#)
 [![Last Commit](https://img.shields.io/badge/last%20commit-June%202026-magenta.svg)](#)
-
+</div>
 ---
 
 ### 🌐 تغییر زبان / Languages

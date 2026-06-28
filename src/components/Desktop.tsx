@@ -160,6 +160,53 @@ export default function Desktop({ currentUser, onLock }: DesktopProps) {
     }
   });
 
+  const [isSettingsSyncEnabled, setIsSettingsSyncEnabled] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('xguard_settings_sync') !== 'false';
+    } catch (e) {
+      return true;
+    }
+  });
+
+  const [wifiRipple, setWifiRipple] = useState(false);
+  const [volumeRipple, setVolumeRipple] = useState(false);
+  const [batteryRipple, setBatteryRipple] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('xguard_settings_sync', String(isSettingsSyncEnabled));
+    } catch (e) {}
+  }, [isSettingsSyncEnabled]);
+
+  // Automated Settings Sync Engine
+  useEffect(() => {
+    if (!isSettingsSyncEnabled) return;
+
+    if (currentUser === 'admin') {
+      // Sync admin preferences with lock screen
+      if (adminThemeColor && adminThemeColor !== lockTheme) {
+        setLockTheme(adminThemeColor);
+        localStorage.setItem('xguard_lockscreen_theme', adminThemeColor);
+      }
+      if (adminWallpaper && adminWallpaper !== lockWallpaper) {
+        setLockWallpaper(adminWallpaper);
+        localStorage.setItem('xguard_lockscreen_wallpaper', adminWallpaper);
+      }
+    } else if (activeUser) {
+      // Sync active user preferences with lock screen
+      const userTheme = activeUser.themeColor || 'cyan';
+      const userWall = activeUser.wallpaper || 'grid';
+      if (userTheme !== lockTheme) {
+        setLockTheme(userTheme);
+        localStorage.setItem('xguard_lockscreen_theme', userTheme);
+      }
+      if (userWall !== lockWallpaper) {
+        setLockWallpaper(userWall);
+        localStorage.setItem('xguard_lockscreen_wallpaper', userWall);
+      }
+    }
+  }, [isSettingsSyncEnabled, currentUser, activeUser?.themeColor, activeUser?.wallpaper, adminThemeColor, adminWallpaper]);
+
   // Battery Status API State
   const [battery, setBattery] = useState<{
     supported: boolean;
@@ -3510,6 +3557,82 @@ export default function Desktop({ currentUser, onLock }: DesktopProps) {
                           </div>
                         </div>
                       )}
+                    </div>
+                  </div>
+
+                  {/* Centralized Settings Sync Utility */}
+                  <div className="bg-slate-950/60 border border-slate-800 p-4 rounded-xl space-y-3 relative overflow-hidden">
+                    {/* Glass box background reflection */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
+                    
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xs font-black text-slate-300 flex items-center gap-1.5">
+                        <RefreshCw className={`w-3.5 h-3.5 text-cyan-400 ${isSettingsSyncEnabled ? 'animate-spin' : ''}`} style={{ animationDuration: '8s' }} />
+                        <span>{lang === 'fa' ? 'ابزار همگام‌سازی تنظیمات (Settings Sync)' : 'Settings Sync Utility'}</span>
+                      </h4>
+                      <span className={`text-[8px] px-1.5 py-0.5 rounded font-black font-mono ${
+                        isSettingsSyncEnabled ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : 'bg-slate-900 text-slate-500 border border-slate-850'
+                      }`}>
+                        {isSettingsSyncEnabled ? (lang === 'fa' ? 'فعال و برخط' : 'ACTIVE') : (lang === 'fa' ? 'غیرفعال' : 'DISABLED')}
+                      </span>
+                    </div>
+                    
+                    <p className="text-[10px] text-slate-400 leading-relaxed text-right">
+                      {lang === 'fa' 
+                        ? 'این ابزار تضمین می‌کند انتخاب‌های پوسته، رنگ اصلی و والپیپر شخصی شما به‌صورت آنی و خودکار بین این دسکتاپ و صفحه قفل (Lock Screen) همگام بماند.'
+                        : 'Ensures your active workspace theme, primary accent, and desktop wallpaper automatically sync in real-time with the secure client lock screen.'}
+                    </p>
+
+                    <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-900 border border-slate-850 mt-1">
+                      <span className="text-[10px] font-bold text-slate-300">
+                        {lang === 'fa' ? 'همگام‌سازی خودکار دوطرفه' : 'Auto Sync Toggle'}
+                      </span>
+                      <label className="relative inline-flex items-center cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          checked={isSettingsSyncEnabled}
+                          onChange={(e) => {
+                            setIsSettingsSyncEnabled(e.target.checked);
+                            if (e.target.checked) {
+                              triggerToast(lang === 'fa' ? 'همگام‌سازی خودکار ترجیحات فعال شد!' : 'Auto settings sync enabled!', 'info');
+                            } else {
+                              triggerToast(lang === 'fa' ? 'همگام‌سازی خودکار غیرفعال شد.' : 'Auto settings sync disabled.', 'info');
+                            }
+                          }}
+                        />
+                        <div className="w-10 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-slate-400 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyan-500 peer-checked:after:bg-slate-950"></div>
+                      </label>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      <button
+                        onClick={() => {
+                          if (activeUser) {
+                            setLockTheme(activeUser.themeColor || 'cyan');
+                            setLockWallpaper(activeUser.wallpaper || 'grid');
+                            triggerToast(lang === 'fa' ? 'پوسته دسکتاپ با موفقیت به صفحه قفل کپی شد.' : 'Desktop style pushed to lock screen!', 'info');
+                          }
+                        }}
+                        className="bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/20 text-slate-300 text-[9px] py-1.5 rounded-lg font-bold transition cursor-pointer text-center"
+                      >
+                        {lang === 'fa' ? 'اعمال دسکتاپ روی قفل 🔐' : 'Push to Lock Screen 🔐'}
+                      </button>
+                      
+                      <button
+                        onClick={() => {
+                          if (activeUser) {
+                            handleUpdateUserProfile({
+                              themeColor: lockTheme as any,
+                              wallpaper: lockWallpaper as any
+                            });
+                            triggerToast(lang === 'fa' ? 'پوسته صفحه قفل روی دسکتاپ شما اعمال گردید.' : 'Lock screen style applied to desktop!', 'info');
+                          }
+                        }}
+                        className="bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-purple-500/20 text-slate-300 text-[9px] py-1.5 rounded-lg font-bold transition cursor-pointer text-center"
+                      >
+                        {lang === 'fa' ? 'اعمال قفل روی دسکتاپ 💻' : 'Pull from Lock Screen 💻'}
+                      </button>
                     </div>
                   </div>
 
@@ -6966,6 +7089,50 @@ export default function Desktop({ currentUser, onLock }: DesktopProps) {
                             </div>
                           </div>
 
+                          {/* Centralized Settings Sync (Admin panel copy) */}
+                          <div className="bg-slate-950/40 border border-slate-800 p-6 rounded-xl space-y-4 text-right">
+                            <h4 className="text-xs font-black text-cyan-400 flex items-center gap-2 border-b border-slate-800 pb-3">
+                              <RefreshCw className={`w-4 h-4 text-cyan-400 ${isSettingsSyncEnabled ? 'animate-spin' : ''}`} style={{ animationDuration: '8s' }} />
+                              <span>مدیریت هماهنگ‌سازی پوسته‌ها (Settings Sync Center)</span>
+                            </h4>
+
+                            <p className="text-[11px] text-slate-400 leading-relaxed">
+                              قابلیت همگام‌سازی تضمین می‌کند تنظیمات و کارهای گرافیکی انجام‌شده در پنل کاربری دسکتاپ‌ها و پنل مدیریت، بلافاصله روی پوسته اصلی صفحه قفل (Lock Screen) اعمال گردد و تعامل یکپارچه‌ای حاصل شود.
+                            </p>
+
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-slate-900 border border-slate-850">
+                              <div className="text-right">
+                                <span className="text-xs font-bold text-slate-200 block">همگام‌سازی هوشمند خودکار</span>
+                                <span className="text-[9px] text-slate-500 block">اعمال خودکار تغییرات گرافیکی ادمین/کاربر بر روی لاک اسکرین</span>
+                              </div>
+                              <label className="relative inline-flex items-center cursor-pointer select-none">
+                                <input
+                                  type="checkbox"
+                                  className="sr-only peer"
+                                  checked={isSettingsSyncEnabled}
+                                  onChange={(e) => {
+                                    setIsSettingsSyncEnabled(e.target.checked);
+                                    triggerToast(e.target.checked ? 'همگام‌سازی خودکار ترجیحات فعال شد!' : 'همگام‌سازی خودکار غیرفعال شد.', 'info');
+                                  }}
+                                />
+                                <div className="w-10 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-slate-400 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyan-500 peer-checked:after:bg-slate-950"></div>
+                              </label>
+                            </div>
+
+                            <div className="flex gap-3 justify-end pt-1">
+                              <button
+                                onClick={() => {
+                                  setLockTheme(adminThemeColor);
+                                  setLockWallpaper(adminWallpaper);
+                                  triggerToast('تنظیمات تم و والپیپر ادمین بر روی صفحه قفل کلاینت همگام شد.', 'info');
+                                }}
+                                className="bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-300 text-[10px] py-2 px-4 rounded-lg font-black transition cursor-pointer"
+                              >
+                                همگام‌سازی دستی اکنون (Sync Now)
+                              </button>
+                            </div>
+                          </div>
+
                         </div>
                       )}
 
@@ -7315,19 +7482,32 @@ export default function Desktop({ currentUser, onLock }: DesktopProps) {
         <div className="flex items-center gap-3 font-mono relative">
           
           {/* SYSTEM TRAY ICONS */}
-          <div className="flex items-center gap-2.5 text-slate-500 text-xs">
+          <div className="flex items-center gap-2 text-slate-500 text-xs">
             {battery.supported && battery.hasBattery && (
               <div className="relative">
                 <motion.div 
-                  onClick={() => setShowBatteryPopover(!showBatteryPopover)}
-                  whileHover={{ scale: 1.05, y: -2 }}
+                  onClick={() => {
+                    setShowBatteryPopover(!showBatteryPopover);
+                    setBatteryRipple(true);
+                    setTimeout(() => setBatteryRipple(false), 500);
+                  }}
+                  whileHover={{ scale: 1.05, y: -1 }}
+                  whileTap={{ scale: 0.82, y: 1 }}
                   animate={{ y: [0, -1, 0] }}
                   transition={{
                     y: { repeat: Infinity, duration: 3.5, ease: "easeInOut" },
                     scale: { duration: 0.15 }
                   }}
-                  className="flex items-center gap-1 cursor-pointer mr-1 px-1.5 py-0.5 rounded hover:bg-white/5 transition"
+                  className="relative flex items-center gap-1 cursor-pointer mr-1 px-1.5 py-1 rounded hover:bg-white/5 transition overflow-hidden"
                 >
+                  {batteryRipple && (
+                    <motion.span
+                      initial={{ scale: 0.1, opacity: 0.9 }}
+                      animate={{ scale: 2.2, opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="absolute inset-0 rounded-full bg-cyan-500/40 pointer-events-none"
+                    />
+                  )}
                   {battery.charging ? (
                     <BatteryCharging className="w-4 h-4 text-emerald-400 animate-pulse" />
                   ) : battery.level <= 0.2 ? (
@@ -7366,7 +7546,7 @@ export default function Desktop({ currentUser, onLock }: DesktopProps) {
                             {battery.charging ? 'در حال شارژ با کابل AC' : 'درحال کار روی باتری داخلی'}
                           </p>
                           <p className="text-[9px] text-slate-500">
-                            {battery.charging ? 'جریان ورودی: ۲۴ وات فست شارژ' : 'حدود ۳ ساعت و ۴۵ دقیقه باقی‌مانده'}
+                            {battery.charging ? 'جران ورودی: ۲۴ وات فست شارژ' : 'حدود ۳ ساعت و ۴۵ دقیقه باقی‌مانده'}
                           </p>
                         </div>
                       </div>
@@ -7404,22 +7584,57 @@ export default function Desktop({ currentUser, onLock }: DesktopProps) {
               </div>
             )}
 
-            <Volume2 
-              onClick={() => {
-                setShowSoundWindow(true);
-                setActiveWindowId('sound-settings-window');
-              }}
-              className="w-4 h-4 cursor-pointer hover:text-slate-300 transition-colors" 
-              title={t('shortcut_sound')}
-            />
-            <Wifi 
-              onClick={() => {
-                setShowWifiWindow(true);
-                setActiveWindowId('wifi-settings-window');
-              }}
-              className="w-4 h-4 cursor-pointer hover:text-slate-300 transition-colors" 
-              title={t('shortcut_wifi')}
-            />
+            {/* Volume Icon Wrapper */}
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.15, y: -1 }}
+                whileTap={{ scale: 0.82, y: 1 }}
+                onClick={() => {
+                  setShowSoundWindow(true);
+                  setActiveWindowId('sound-settings-window');
+                  setVolumeRipple(true);
+                  setTimeout(() => setVolumeRipple(false), 500);
+                }}
+                className="relative p-1.5 rounded hover:bg-white/5 transition cursor-pointer flex items-center justify-center overflow-hidden"
+                title={t('shortcut_sound')}
+              >
+                {volumeRipple && (
+                  <motion.span
+                    initial={{ scale: 0.1, opacity: 0.9 }}
+                    animate={{ scale: 2.2, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute inset-0 rounded-full bg-purple-500/40 pointer-events-none"
+                  />
+                )}
+                <Volume2 className="w-4 h-4 hover:text-slate-300 transition-colors" />
+              </motion.div>
+            </div>
+
+            {/* Wi-Fi Icon Wrapper */}
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.15, y: -1 }}
+                whileTap={{ scale: 0.82, y: 1 }}
+                onClick={() => {
+                  setShowWifiWindow(true);
+                  setActiveWindowId('wifi-settings-window');
+                  setWifiRipple(true);
+                  setTimeout(() => setWifiRipple(false), 500);
+                }}
+                className="relative p-1.5 rounded hover:bg-white/5 transition cursor-pointer flex items-center justify-center overflow-hidden"
+                title={t('shortcut_wifi')}
+              >
+                {wifiRipple && (
+                  <motion.span
+                    initial={{ scale: 0.1, opacity: 0.9 }}
+                    animate={{ scale: 2.2, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute inset-0 rounded-full bg-cyan-500/40 pointer-events-none"
+                  />
+                )}
+                <Wifi className="w-4 h-4 hover:text-slate-300 transition-colors" />
+              </motion.div>
+            </div>
             
             {/* THE SECURITY TRAY SERVICE ICON */}
             <div className="relative">

@@ -1,10 +1,10 @@
 # 🛡️ X-Guard Autonomous Client Command & Security System
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
-[![Platform](https://img.shields.io/badge/platform-React%20%7C%20Vite%20%7C%20TS-cyan.svg)](#)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](#)
-[![Stars](https://img.shields.io/github/stars/miroxvy1-lab/X-Guard.svg?style=flat&color=purple)](https://github.com/opendatalab/MinerU)
-[![Last Commit](https://img.shields.io/badge/last%20commit-June%202026-magenta.svg)](#)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/miroxvy1-lab/X-Guard)
+[![Platform](https://img.shields.io/badge/platform-React%20%7C%20Vite%20%7C%20TS-cyan.svg)](https://github.com/miroxvy1-lab/X-Guard)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/miroxvy1-lab/X-Guard)
+[![Stars](https://img.shields.io/github/stars/miroxvy1-lab/X-Guard.svg?style=flat&color=purple)](https://github.com/miroxvy1-lab/X-Guard)
+[![Last Commit](https://img.shields.io/badge/last%20commit-June%202026-magenta.svg)](https://github.com/miroxvy1-lab/X-Guard)
 
 ---
 

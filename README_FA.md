@@ -129,7 +129,7 @@
   <h3>راه‌های ارتباط مستقیم با سازنده 🚀</h3>
   
   <a href="https://t.me/pokcidman" target="_blank">
-    <img src="https://img.shields.io/badge/تلگرام-@pokcidman-blue?style=flat-square&logo=telegram&logoColor=white" alt="Telegram" />
+    <img src="https://img.shields.io/badge/تلگرام-@AmirTalebi_X-blue?style=flat-square&logo=telegram&logoColor=white" alt="Telegram" />
   </a>
   &nbsp;&nbsp;
   <a href="https://instagram.com/pokcidman" target="_blank">
@@ -137,7 +137,7 @@
   </a>
   &nbsp;&nbsp;
   <a href="https://github.com/pokcidman" target="_blank">
-    <img src="https://img.shields.io/badge/گیت--هاب-pokcidman-black?style=flat-square&logo=github&logoColor=white" alt="GitHub" />
+    <img src="https://img.shields.io/badge/گیت--هاب-miroxvy1-black?style=flat-square&logo=github&logoColor=white" alt="GitHub" />
   </a>
 </div>
 
